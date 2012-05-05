@@ -1,0 +1,6 @@
+*~
+*.gem
+/log
+/.bundle
+/.rvmrc
+tmp
