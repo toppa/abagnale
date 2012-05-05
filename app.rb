@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'pry'
 
-require 'cc'
+require './cc'
 
 get '/hi' do
   "Hello World\n"
