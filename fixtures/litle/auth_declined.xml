@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<litleOnlineResponse xmlns="http://www.litle.com/schema" version="8.2" response="0" message="Valid Format">
+  <authorizationResponse id="834262" reportGroup="ABC Division">
+    <litleTxnId>BADFOODDEADBEEFDECAF</litleTxnId>
+    <orderId>1234567</orderId>
+    <response>120</response>
+    <responseTime>2009-07-25T15:13:43</responseTime>
+    <postDate>2009-07-25</postDate>
+    <message>Call Issuer</message>
+    <authCode>123457</authCode>
+    <fraudResult>
+      <avsResult>20</avsResult>
+      <cardValidationResult>N</cardValidationResult>
+      <authenticationResult>2</authenticationResult>
+    </fraudResult>
+    <enhancedAuthResponse>
+      <fundingSource>
+        <type>PREPAID</type>
+        <availableBalance>0</availableBalance>
+      </fundingSource>
+    </enhancedAuthResponse>
+  </authorizationResponse>
+</litleOnlineResponse>

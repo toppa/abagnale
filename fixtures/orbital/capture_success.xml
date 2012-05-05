@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <MarkForCaptureResp>
+    <MerchantID>XXX_MERCHANT_ID_XXX</MerchantID>
+    <TerminalID>XXX_TERMINAL_ID_XXX</TerminalID>
+    <OrderID>XXX_ORDER_ID_XXX</OrderID>
+    <TxRefNum>XXX_TXREFNUM_XXX</TxRefNum>
+    <TxRefIdx>XXX_TXREFIDX_XXX</TxRefIdx>
+    <Amount>XXX_AMOUNT_XXX</Amount>
+    <ProcStatus>0</ProcStatus>
+    <StatusMsg>Success</StatusMsg>
+    <RespTime>123456</RespTime>
+    <ApprovalStatus>1</ApprovalStatus>
+    <RespCode> </RespCode>
+  </MarkForCaptureResp>
+</Response>

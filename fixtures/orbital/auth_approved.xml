@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Response SYSTEM "Response_PTI34.dtd">
+<Response>
+  <ACResponse>
+    <CommonDataResponse>
+      <CommonMandatoryResponse HcsTcsInd="T" LangInd="00" MessageType="AC" TzCode="705" Version="2">
+        <MerchantID>300001750104</MerchantID>
+        <TerminalID>001</TerminalID>
+        <TxRefNum>BADFOODDEADBEEFDECAFBAD1234567890FEDBOOD</TxRefNum>
+        <TxRefIdx>1</TxRefIdx>
+        <OrderNumber>0140229440212049</OrderNumber>
+        <RespTime>10032000930312</RespTime>
+        <ProcStatus>0</ProcStatus>
+        <StatusMsg StatusMsgLth="8">Approved</StatusMsg>
+        <ApprovalStatus>1</ApprovalStatus>
+        <ResponseCodes>
+          <AuthCode>049912</AuthCode>
+          <RespCode>00</RespCode>
+          <HostRespCode>00</HostRespCode>
+          <CVV2RespCode> </CVV2RespCode>
+          <AVSRespCode>H </AVSRespCode>
+          <HostAVSRespCode>Y</HostAVSRespCode>
+        </ResponseCodes>
+      </CommonMandatoryResponse>
+      <CommonOptionalResponse>
+        <RespDate>090103</RespDate>
+        <CardType>MC</CardType>
+        <ExpDate>0911</ExpDate>
+        <CurrencyCd>840</CurrencyCd>
+      </CommonOptionalResponse>
+    </CommonDataResponse>
+    <AuthResponse>
+      <AuthMandatoryResponse/>
+      <AuthOptionalResponse>
+        <POSEntryMode>01</POSEntryMode>
+        <MISCData>
+          <ActualRespCd>00 </ActualRespCd>
+        </MISCData>
+        <NetworkData>
+          <AuthNetwkID>02</AuthNetwkID>
+        </NetworkData>
+        <MCCard>
+          <MCInterchangeInd MCIInd="A"/>
+        </MCCard>
+      </AuthOptionalResponse>
+    </AuthResponse>
+    <CapResponse>
+      <CapMandatoryResponse CapStatus="1"/>
+      <CapOptionalResponse>
+        <Amount>500</Amount>
+        <FraudCardSecVal> </FraudCardSecVal>
+      </CapOptionalResponse>
+    </CapResponse>
+  </ACResponse>
+</Response>

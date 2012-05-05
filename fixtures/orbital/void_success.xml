@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <ReversalResp>
+    <MerchantID>XXX_MERCHANT_ID_XXX</MerchantID>
+    <TerminalID>XXX_TERMINAL_ID_XXX</TerminalID>
+    <OrderID>XXX_ORDER_ID_XXX</OrderID>
+    <TxRefNum>XXX_TXREFNUM_XXX</TxRefNum>
+    <TxRefIdx>XXX_TXREFIDX_XXX</TxRefIdx>
+    <OutstandingAmt>XXX_AMOUNT_XXX</OutstandingAmt>
+    <ProcStatus>0</ProcStatus>
+    <StatusMsg>Success</StatusMsg>
+    <RespTime>123456</RespTime>
+  </ReversalResp>
+</Response>

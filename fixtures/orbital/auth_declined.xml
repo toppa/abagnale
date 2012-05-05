@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Response SYSTEM "Response_PTI34.dtd">
+<Response>
+  <ACResponse>
+    <CommonDataResponse>
+      <CommonMandatoryResponse HcsTcsInd="T" LangInd="00" MessageType="AC" TzCode="705" Version="2">
+        <MerchantID>113272</MerchantID>
+        <TerminalID>001</TerminalID>
+        <TxRefNum>DECLINEDBADFOODDEADBEEFDECAFBAD123456789</TxRefNum>
+        <TxRefIdx>0</TxRefIdx>
+        <OrderNumber>0057054090750954</OrderNumber>
+        <RespTime>02429080114191</RespTime>
+        <ProcStatus>0</ProcStatus>
+        <StatusMsg StatusMsgLth="12">Do Not Honor</StatusMsg>
+        <ApprovalStatus>0</ApprovalStatus>
+        <ResponseCodes>
+          <RespCode>05</RespCode>
+          <HostRespCode>530</HostRespCode>
+          <CVV2RespCode> </CVV2RespCode>
+          <HostCVV2RespCode>  </HostCVV2RespCode>
+          <AVSRespCode>B </AVSRespCode>
+          <HostAVSRespCode>I3</HostAVSRespCode>
+        </ResponseCodes>
+      </CommonMandatoryResponse>
+      <CommonOptionalResponse>
+        <RespDate>080429</RespDate>
+        <CardType>MC</CardType>
+        <ExpDate>0109</ExpDate>
+        <CurrencyCd>840</CurrencyCd>
+      </CommonOptionalResponse>
+    </CommonDataResponse>
+    <AuthResponse>
+      <AuthMandatoryResponse/>
+      <AuthOptionalResponse>
+        <POSEntryMode>01</POSEntryMode>
+        <MISCData/>
+        <MCCard>
+          <RecurringAdviceCd>03</RecurringAdviceCd>
+        </MCCard>
+      </AuthOptionalResponse>
+    </AuthResponse>
+    <CapResponse>
+      <CapMandatoryResponse CapStatus="0"/>
+    </CapResponse>
+  </ACResponse>
+</Response>

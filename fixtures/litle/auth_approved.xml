@@ -1,0 +1,14 @@
+<litleOnlineResponse version="8.2" response="0" message="Valid Format">
+    <authorizationResponse reportGroup="1">
+        <litleTxnId>BADFOODDEADBEEFDECAF</litleTxnId>
+        <orderId>1234567</orderId>
+        <response>000</response>
+        <responseTime>2012-03-08T16:41:49</responseTime>
+        <postDate>2011-03-08</postDate>
+        <message>Approved</message>
+        <authCode>44444</authCode>
+        <fraudResult>
+            <avsResult>00</avsResult>
+        </fraudResult>
+    </authorizationResponse>
+</litleOnlineResponse>
