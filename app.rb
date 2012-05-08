@@ -10,7 +10,7 @@ end
 # Chase Paymentech Orbital
 post '/authorize' do
   xml = request.body.read
-  fullccnum = $1 if xml =~ /<AccountNum>(\d*)<\/AccountNum>/
+  fullccnum = $1 if xml =~ /<AccountNum>(.*)<\/AccountNum>/
   result = case xml
   when /<MarkForCapture>/
     'capture_success'
@@ -25,8 +25,8 @@ end
 # Litle
 post '/vap/communicator/online' do
   xml = request.body.read
-  fullccnum = $1 if xml =~ /<number>(\d*)<\/number>/
-  result = case fullccnum
+  fullccnum = $1 if xml =~ /<number>(.*)<\/number>/
+  result = case xml
   when /<capture/
     'capture_success'
   else
