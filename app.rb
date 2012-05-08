@@ -1,5 +1,14 @@
+require 'rubygems'
 require 'sinatra'
 require 'pry'
+require 'pg'
+require 'active_record'
+
+ActiveRecord::Base.establish_connection(
+   :adapter => 'postgresql',
+   :database =>  'abagnale'
+)
+# ActiveRecord::Base.logger = Logger.new(STDOUT)
 
 require './cc'
 
