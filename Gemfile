@@ -1,5 +1,5 @@
 source :rubygems
-gem 'activerecord'
+gem 'activerecord', '3.0.11'
 gem 'pg'
 gem 'pry'
 gem 'nokogiri'
