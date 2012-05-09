@@ -1,0 +1,25 @@
+- content_for :title do
+  | Abagnale Transactions
+
+h1
+  | Abagnale Transactions
+  
+table.transactions
+  thead
+    th Date
+    th Name
+    th Amount
+    th Order
+    th Result
+    th Settled
+
+  - @transactions.each do |tx|
+    tr
+      td.date= tx.created_at.to_s(:db)
+      td.name= tx.name
+      td.amount= '$' + to_dollars(tx.amount)
+      td.order= tx.order
+      td.auth_result= tx.auth_result
+      td.settled_at== tx.settled_at.nil? ? '&nbsp;' : tx.settled_at.to_s(:db)
+      
+== will_paginate @transactions

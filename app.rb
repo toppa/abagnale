@@ -1,10 +1,14 @@
 require 'rubygems'
 require 'sinatra'
+require 'sinatra/content_for'
 require 'pry'
 require 'pg'
 require 'active_record'
 require 'nokogiri'
 require 'logger'
+require 'slim'
+require 'will_paginate'
+require 'will_paginate/active_record'
 
 logger = Logger.new(STDOUT)
 
@@ -17,8 +21,31 @@ ActiveRecord::Base.establish_connection(
 require './cc'
 require './transaction'
 
+helpers do
+  def commify(num)
+    num =~ /([^\.]*)(\..*)?/
+    int, dec = $1.reverse, $2 ? $2 : ""
+    while int.gsub!(/(,|\.|^)(\d{3})(\d)/, '\1\2,\3')
+    end
+    int.reverse + dec
+  end
+  def to_dollars(num, args = {})
+    string = num.abs.to_s
+    string.insert(0, "0") while string.length < 3
+    string.insert(-3, '.')
+    string.insert(0, '-') if (num < 0)
+    string = string.chop.chop.chop if args[:hide_cents]
+    (args[:commify] == false) ? string : commify(string)
+  end
+end
+
 get '/hi' do
   "Hello World\n"
+end
+
+get '/' do
+  @transactions = Transaction.paginate(:page => params[:page], :order => 'created_at DESC')
+  slim :index
 end
 
 # Chase Paymentech Orbital

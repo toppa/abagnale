@@ -1,0 +1,17 @@
+.transactions td {
+  padding: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+td.date {
+  width: 150px;
+}
+
+td.name {
+  width: 200px;
+}
+
+td.result {
+  width: 100px;
+}
