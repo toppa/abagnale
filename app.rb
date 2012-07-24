@@ -57,6 +57,10 @@ get '/' do
   slim :index
 end
 
+post '/parrot' do
+  request.body.read
+end
+
 # Chase Paymentech Orbital
 post '/authorize' do
   xml = request.body.read
