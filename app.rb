@@ -96,6 +96,7 @@ end
 # Litle
 post '/vap/communicator/online' do
   xml = request.body.read
+  logger.info("Litle headers: '#{Hash[request.env.select{|k,v| k =~ /HTTP_/}].inspect}'")
   logger.info("Litle request: '#{xml}'")
   begin
     doc =  Nokogiri::XML(xml)
