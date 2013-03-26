@@ -96,6 +96,7 @@ end
 # Litle
 post '/vap/communicator/online' do
   xml = request.body.read
+  logger.info("Litle request: '#{xml}'")
   begin
     doc =  Nokogiri::XML(xml)
     ns = doc.children.first.namespace.href # dumbass xml namespaces
@@ -123,7 +124,7 @@ post '/vap/communicator/online' do
     headers "Content-Type" => 'application/xml'
     body
   rescue => err
-    logger.warn("Bogus orbital request: #{err}")
+    logger.warn("Bogus litle request: #{err}")
     halt 400, "What's the matter with you?"
   end
 end
