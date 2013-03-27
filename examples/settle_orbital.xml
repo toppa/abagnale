@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Request>
+  <MarkForCapture>
+    <OrderID>05836622</OrderID>
+    <Amount>3000</Amount>
+    <BIN>000002</BIN>
+    <MerchantID>300001831598</MerchantID>
+    <TerminalID>001</TerminalID>
+    <TxRefNum>abagnale-2</TxRefNum>
+  </MarkForCapture>
+</Request>

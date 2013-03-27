@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Request>
+  <NewOrder>
+    <IndustryType>EC</IndustryType>
+    <MessageType>A</MessageType>
+    <BIN>000001</BIN>
+    <MerchantID>113272</MerchantID>
+    <TerminalID>001</TerminalID>
+    <AccountNum>4111111111111111</AccountNum>
+    <Exp>0512</Exp>
+    <CurrencyCode>840</CurrencyCode>
+    <CurrencyExponent>2</CurrencyExponent>
+    <AVSzip>98765</AVSzip>
+    <AVSaddress1>1313 MOCKINGBIRD WAY</AVSaddress1>
+    <AVSaddress2></AVSaddress2>
+    <AVScity>SPRINGFIELD</AVScity>
+    <AVSstate>CA</AVSstate>
+    <AVSname>BOB DOBBS</AVSname>
+    <AVScountryCode>US</AVScountryCode>
+    <OrderID>01464881</OrderID>
+    <Amount>200</Amount>
+  </NewOrder>
+</Request>

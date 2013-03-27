@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<litleOnlineRequest merchantId="073202" version="8.2" xmlns="http://www.litle.com/schema">
+  <authentication>
+    <user>ACTBLUE</user>
+    <password>api_password</password>
+  </authentication>
+  <authorization reportGroup="1">
+    <orderId>1234567</orderId>
+    <amount>300</amount>
+    <orderSource>ecommerce</orderSource>
+    <billToAddress>
+      <name>Illegal Contributor</name>
+      <addressLine1>Cell Block 13</addressLine1>
+      <city>Stillwater</city>
+      <state>MN</state>
+      <zip>55082</zip>
+      <email>IllegalContributor@example.com</email>
+    </billToAddress>
+    <card>
+      <type>VI</type>
+      <number>4111111111111111</number>
+      <expDate>0613</expDate>
+    </card>
+  </authorization>
+</litleOnlineRequest>
