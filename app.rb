@@ -46,6 +46,19 @@ helpers do
     string = string.chop.chop.chop if args[:hide_cents]
     (args[:commify] == false) ? string : commify(string)
   end
+  def litle_batch_response(txrefnums, orderids, xml_template)
+    doc =  Nokogiri::XML(xml_template)
+    first_response = doc.at_xpath('//captureResponse')
+    txrefnums.each_with_index do |txrefnum, i|
+      new_response = first_response.dup(1)
+      new_response.at_xpath('litleTxnId').content = txrefnum
+      new_response.at_xpath('orderId').content = orderids[i]
+      first_response.before(new_response)
+    end
+    (doc.xpath('//captureResponse').size - txrefnums.size).times {
+      doc.xpath('//captureResponse').last.remove }
+    doc.to_xml
+  end
 end
 
 get '/hi' do
@@ -103,7 +116,9 @@ post '/vap/communicator/online' do
     doc =  Nokogiri::XML(xml)
     ns = doc.children.first.namespace.href # dumbass xml namespaces
 
-    case (request_name = doc.xpath("//ns:litleOnlineRequest/*", 'ns' => ns).last.name)
+    request_name = doc.at_xpath("//ns:litleOnlineRequest/*", 'ns' => ns)
+    request_name = doc.at_xpath("//ns:litleRequest/*", 'ns' => ns) if request_name.empty?
+    case request_name.name
     when "authorization"
       fullccnum = doc.xpath('//ns:card/ns:number', 'ns' => ns).inner_text
       name = doc.xpath('//ns:name', 'ns' => ns).inner_text
@@ -119,6 +134,19 @@ post '/vap/communicator/online' do
       tx_id = txrefnum.split('-').last
       Transaction.find(tx_id).update_attributes(:settled_at => Time.now)
       body = File.read(File.dirname(__FILE__) + "/fixtures/litle/capture_success.xml")
+    when "batchRequest"
+      txrefnums = []
+      orderids = []
+      doc.xpath('//ns:capture', 'ns' => ns).each do |capture|
+        orderid = capture.at_xpath('//ns:orderId', 'ns' => ns).text
+        txrefnum = capture.at_xpath('//ns:litleTxnId', 'ns' => ns).text
+        tx_id = txrefnum.split('-').last
+        txrefnums << txrefnum
+        orderids << orderid
+        Transaction.find(tx_id).update_attributes(:settled_at => Time.now)
+      end
+      body = litle_batch_response(txrefnums, orderids,
+                                  File.read(File.dirname(__FILE__) + "/fixtures/litle/capture_batch_success.xml"))
     else
       logger.warn("Unrecognized litle request #{request_name}")
       halt 400, "What are you talking about?"

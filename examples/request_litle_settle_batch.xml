@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<litleRequest version="8.2" xmlns="http://www.litle.com/schema">
+  <authentication>
+    <user>ABC123ABC123ABC123</user>
+    <password>ABC123ABC123ABC123</password>
+  </authentication>
+  <batchRequest numCaptures="2">
+    <capture reportGroup="1" partial="false">
+      <orderId>00002143</orderId>
+      <litleTxnId>tx-id-1</litleTxnId>
+    </capture>
+    <capture reportGroup="1" partial="false">
+      <orderId>00002143</orderId>
+      <litleTxnId>tx-id-2</litleTxnId>
+    </capture>
+  </batchRequest>
+</litleRequest>
