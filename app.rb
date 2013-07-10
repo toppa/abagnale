@@ -89,7 +89,7 @@ post '/authorize' do
       result = Cc.result(fullccnum)
       tx = Transaction.create!(:fullccnum => fullccnum, :name => name, :auth_result => result, :order => order, :amount => amount)
       body = File.read(File.dirname(__FILE__) + "/fixtures/orbital/auth_#{result}.xml")
-      body.gsub!(/BADFOODDEADBEEFDECAFBAD1234567890FEDBOOD/, "abagnale-#{tx.id}")
+      body.gsub!(/BADFOODDEADBEEFDECAFBAD123456789-ORBITAL/, "abagnale-#{tx.id}")
     when "MarkForCapture"
       txrefnum = doc.xpath('//TxRefNum').inner_text
       tx_id = txrefnum.split('-').last
@@ -128,7 +128,7 @@ post '/vap/communicator/online' do
       result = Cc.result(fullccnum)
       tx = Transaction.create!(:fullccnum => fullccnum, :name => name, :auth_result => result, :order => order, :amount => amount)
       body = File.read(File.dirname(__FILE__) + "/fixtures/litle/auth_#{result}.xml")
-      body.gsub!(/BADFOODDEADBEEFDECAF/, "abagnale-#{tx.id}")
+      body.gsub!(/BADFOODDEADBEE-LITLE/, "abagnale-#{tx.id}")
     when "capture"
       txrefnum = doc.xpath('//ns:litleTxnId', 'ns' => ns).inner_text
       tx_id = txrefnum.split('-').last

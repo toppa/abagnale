@@ -6,7 +6,7 @@
       <CommonMandatoryResponse HcsTcsInd="T" LangInd="00" MessageType="AC" TzCode="705" Version="2">
         <MerchantID>300001750104</MerchantID>
         <TerminalID>001</TerminalID>
-        <TxRefNum>BADFOODDEADBEEFDECAFBAD1234567890FEDBOOD</TxRefNum>
+        <TxRefNum>BADFOODDEADBEEFDECAFBAD123456789-ORBITAL</TxRefNum>
         <TxRefIdx>1</TxRefIdx>
         <OrderNumber>0140229440212049</OrderNumber>
         <RespTime>10032000930312</RespTime>

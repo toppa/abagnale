@@ -8,7 +8,7 @@
       <message>message</message>
     </captureResponse>
     <captureResponse id="AX54325432" reportGroup="2">
-      <litleTxnId>BADFOODDEADBEEFDECAF</litleTxnId>
+      <litleTxnId>BADFOODDEADBEE-LITLE</litleTxnId>
       <orderId>12z58743y7</orderId>
       <response>000</response>
       <responseTime>2011-09-01T10:24:31</responseTime>
