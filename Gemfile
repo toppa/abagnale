@@ -1,5 +1,6 @@
 source "https://rubygems.org"
-ruby '1.9.3'
+# Must not have the ruby version statement on heroku bamboo ... put this back after migrating
+# ruby '1.9.3'
 
 gem 'activerecord', '3.0.11'
 gem 'pg'
