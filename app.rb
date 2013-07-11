@@ -116,9 +116,9 @@ post '/vap/communicator/online' do
     doc =  Nokogiri::XML(xml)
     ns = doc.children.first.namespace.href # dumbass xml namespaces
 
-    request_name = doc.at_xpath("//ns:litleOnlineRequest/*", 'ns' => ns)
-    request_name = doc.at_xpath("//ns:litleRequest/*", 'ns' => ns) if request_name.empty?
-    case request_name.name
+    requests = doc.xpath("//ns:litleOnlineRequest/*", 'ns' => ns)
+    requests = doc.xpath("//ns:litleRequest/*", 'ns' => ns) if requests.empty?
+    case requests.last.name
     when "authorization"
       fullccnum = doc.xpath('//ns:card/ns:number', 'ns' => ns).inner_text
       name = doc.xpath('//ns:name', 'ns' => ns).inner_text
@@ -138,8 +138,8 @@ post '/vap/communicator/online' do
       txrefnums = []
       orderids = []
       doc.xpath('//ns:capture', 'ns' => ns).each do |capture|
-        orderid = capture.at_xpath('//ns:orderId', 'ns' => ns).text
-        txrefnum = capture.at_xpath('//ns:litleTxnId', 'ns' => ns).text
+        orderid = capture.at_xpath('ns:orderId', 'ns' => ns).text
+        txrefnum = capture.at_xpath('ns:litleTxnId', 'ns' => ns).text
         tx_id = txrefnum.split('-').last
         txrefnums << txrefnum
         orderids << orderid
