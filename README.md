@@ -1,12 +1,18 @@
-abagnale
-========
+# abagnale
+
 The simplest possible impostor for a credit card processor.
 
-This README should probably have some content.
+## Installation
 
-On the web: http://abagnale.heroku.com/
+    git clone https://github.com/actblue/abagnale.git
+    bundle install
+    createdb abagnale
+    rake db:migration
+    ruby app.rb
 
-Some sample xml here:
+## Usage
 
-$ curl -v -X POST -d @request_litle.xml http://localhost:9292/vap/communicator/online
-$ curl -v -X POST -d @request_litle.xml http://abagnale.heroku.com/vap/communicator/online
+    curl -v -X POST -d @examples/request_litle_auth.xml http://localhost:4567/vap/communicator/online
+    curl -v -X POST -d @examples/request_litle_auth.xml http://abagnale.heroku.com/vap/communicator/online
+
+On the web: [http://abagnale.heroku.com/](http://abagnale.heroku.com/) will give you a list of all processed transactions.

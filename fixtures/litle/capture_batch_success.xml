@@ -1,0 +1,18 @@
+<litleResponse version="8.2" response="0" message="Valid Format">
+  <batchResponse id="01234567" litleBatchId="4455667788"  merchantId="100">
+    <captureResponse id="AX54321678" reportGroup="1">
+      <litleTxnId>BADFOODDEADBEE-LITLE</litleTxnId>
+      <orderId>12z58743y1</orderId>
+      <response>000</response>
+      <responseTime>2011-09-01T10:24:31</responseTime>
+      <message>message</message>
+    </captureResponse>
+    <captureResponse id="AX54325432" reportGroup="2">
+      <litleTxnId>BADFOODDEADBEE-LITLE</litleTxnId>
+      <orderId>12z58743y7</orderId>
+      <response>000</response>
+      <responseTime>2011-09-01T10:24:31</responseTime>
+      <message>message</message>
+    </captureResponse>
+  </batchResponse>
+</litleResponse>

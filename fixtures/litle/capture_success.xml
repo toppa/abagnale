@@ -1,6 +1,6 @@
 <litleOnlineResponse version="8.2" response="0" message="Valid Format">
     <captureResponse reportGroup="1">
-        <litleTxnId>BADFOODDEADBEEFDECAF</litleTxnId>
+        <litleTxnId>BADFOODDEADBEE-LITLE</litleTxnId>
         <response>000</response>
         <responseTime>2011-03-08T16:41:49</responseTime>
         <postDate>2011-03-08</postDate>
