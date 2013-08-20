@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<litleRequest version="8.2" xmlns="http://www.litle.com/schema">
+<litleRequest version="8.2" xmlns="http://www.litle.com/schema" numBatchRequests="2">
   <authentication>
     <user>ABC123ABC123ABC123</user>
     <password>ABC123ABC123ABC123</password>
   </authentication>
-  <batchRequest numCaptures="2">
+  <batchRequest numAuths="0" authAmount="0" numCaptures="2" captureAmount="400" merchantId="13769576041">
     <capture reportGroup="1" partial="false">
-      <orderId>00002143</orderId>
-      <litleTxnId>abagnale-1</litleTxnId>
+      <litleTxnId>1</litleTxnId>
+      <amount>100</amount>
     </capture>
     <capture reportGroup="1" partial="false">
-      <orderId>00002143</orderId>
-      <litleTxnId>abagnale-2</litleTxnId>
+      <litleTxnId>2</litleTxnId>
+      <amount>300</amount>
+    </capture>
+  </batchRequest>
+  <batchRequest numAuths="0" authAmount="0" numCaptures="1" captureAmount="200" merchantId="13769576042">
+    <capture reportGroup="1" partial="false">
+      <litleTxnId>3</litleTxnId>
+      <amount>200</amount>
     </capture>
   </batchRequest>
 </litleRequest>

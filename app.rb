@@ -46,17 +46,17 @@ helpers do
     string = string.chop.chop.chop if args[:hide_cents]
     (args[:commify] == false) ? string : commify(string)
   end
-  def litle_batch_response(txrefnums, orderids, xml_template)
+  def litle_batch_response(orderids, xml_template)
     doc =  Nokogiri::XML(xml_template)
-    first_response = doc.at_xpath('//captureResponse')
-    txrefnums.each_with_index do |txrefnum, i|
+    first_response = doc.at_css('captureResponse')
+    orderids.each_with_index do |orderid, i|
       new_response = first_response.dup(1)
-      new_response.at_xpath('litleTxnId').content = txrefnum
-      new_response.at_xpath('orderId').content = orderids[i]
+      new_response.at_css('litleTxnId').content = "RANDOM-#{rand(100)}"
+      new_response.at_css('orderId').content = orderid
       first_response.before(new_response)
     end
-    (doc.xpath('//captureResponse').size - txrefnums.size).times {
-      doc.xpath('//captureResponse').last.remove }
+    (doc.xpath('//xmlns:captureResponse').size - orderids.size).times {
+      doc.xpath('//xmlns:captureResponse').last.remove }
     doc.to_xml
   end
 end
@@ -135,17 +135,15 @@ post '/vap/communicator/online' do
       Transaction.find(tx_id).update_attributes(:settled_at => Time.now)
       body = File.read(File.dirname(__FILE__) + "/fixtures/litle/capture_success.xml")
     when "batchRequest"
-      txrefnums = []
-      orderids = []
-      doc.xpath('//ns:capture', 'ns' => ns).each do |capture|
-        orderid = capture.at_xpath('ns:orderId', 'ns' => ns).text
+      transactions = []
+      doc.css('capture').each do |capture|
         txrefnum = capture.at_xpath('ns:litleTxnId', 'ns' => ns).text
         tx_id = txrefnum.split('-').last
-        txrefnums << txrefnum
-        orderids << orderid
-        Transaction.find(tx_id).update_attributes(:settled_at => Time.now)
+        transaction = Transaction.find(tx_id)
+        transaction.update_attributes(:settled_at => Time.now)
+        transactions << transaction
       end
-      body = litle_batch_response(txrefnums, orderids,
+      body = litle_batch_response(transactions.map(&:order),
                                   File.read(File.dirname(__FILE__) + "/fixtures/litle/capture_batch_success.xml"))
     else
       logger.warn("Unrecognized litle request #{request_name}")
