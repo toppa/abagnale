@@ -14,5 +14,7 @@ The simplest possible impostor for a credit card processor.
 
     curl -v -X POST -d @examples/request_litle_auth.xml http://localhost:4567/vap/communicator/online
     curl -v -X POST -d @examples/request_litle_auth.xml http://abagnale.heroku.com/vap/communicator/online
+    curl -v -X POST -d @examples/request_orbital_auth.xml http://localhost:4567/authorize
+    curl -v -X POST -d @examples/request_orbital_auth.xml http://abagnale.heroku.com/authorize
 
 On the web: [http://abagnale.heroku.com/](http://abagnale.heroku.com/) will give you a list of all processed transactions.

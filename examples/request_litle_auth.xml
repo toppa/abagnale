@@ -5,8 +5,8 @@
     <password>api_password</password>
   </authentication>
   <authorization reportGroup="1">
-    <orderId>1234567</orderId>
-    <amount>300</amount>
+    <orderId>1234568</orderId>
+    <amount>30000</amount>
     <orderSource>ecommerce</orderSource>
     <billToAddress>
       <name>Illegal Contributor</name>
@@ -19,7 +19,7 @@
     <card>
       <type>VI</type>
       <number>4111111111111111</number>
-      <expDate>0613</expDate>
+      <expDate>0614</expDate>
     </card>
   </authorization>
 </litleOnlineRequest>
