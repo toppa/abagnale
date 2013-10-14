@@ -8,7 +8,7 @@ The simplest possible impostor for a credit card processor.
     bundle install
     createdb abagnale
     rake db:migration
-    ruby app.rb
+    bundle exec ruby app.rb
 
 ## Usage
 
