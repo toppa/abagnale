@@ -46,16 +46,16 @@ helpers do
     string = string.chop.chop.chop if args[:hide_cents]
     (args[:commify] == false) ? string : commify(string)
   end
-  def litle_batch_response(orderids, xml_template)
+  def litle_batch_response(transactions, xml_template)
     doc =  Nokogiri::XML(xml_template)
     first_response = doc.at_css('captureResponse')
-    orderids.each_with_index do |orderid, i|
+    transactions.each_with_index do |transaction, i|
       new_response = first_response.dup(1)
       new_response.at_css('litleTxnId').content = "RANDOM-#{rand(100)}"
-      new_response.at_css('orderId').content = orderid
+      new_response.at_css('orderId').content = transaction.order
       first_response.before(new_response)
     end
-    (doc.xpath('//xmlns:captureResponse').size - orderids.size).times {
+    (doc.xpath('//xmlns:captureResponse').size - transactions.size).times {
       doc.xpath('//xmlns:captureResponse').last.remove }
     doc.to_xml
   end
@@ -93,12 +93,13 @@ helpers do
         transactions = []
         doc.css('capture').each do |capture|
           txrefnum = capture.at_xpath('ns:litleTxnId', 'ns' => ns).text
+          amount = capture.at_xpath('ns:amount', 'ns' => ns).text.to_i
           tx_id = txrefnum.split('-').last
           transaction = Transaction.find(tx_id)
-          transaction.update_attributes(:settled_at => Time.now)
+          transaction.update_attributes(:settled_at => Time.now, :amount => amount)
           transactions << transaction
         end
-        body = litle_batch_response(transactions.map(&:order),
+        body = litle_batch_response(transactions,
                                     File.read(File.dirname(__FILE__) + "/fixtures/litle/capture_batch_success.xml"))
       else
         logger.warn("Unrecognized litle request #{request_name}")
