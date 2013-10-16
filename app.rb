@@ -59,7 +59,7 @@ helpers do
       doc.xpath('//xmlns:captureResponse').last.remove }
     doc.to_xml
   end
-  def process_litle
+  def process_litle(type)
     xml = request.body.read
     logger.info("Litle headers: '#{Hash[request.env.select{|k,v| k =~ /HTTP_/}].inspect}'")
     logger.info("Content-Length: #{request.content_length} User-Agent: '#{request.user_agent}'")
@@ -68,8 +68,11 @@ helpers do
       doc =  Nokogiri::XML(xml)
       ns = doc.children.first.namespace.href # dumbass xml namespaces
 
-      requests = doc.xpath("//ns:litleOnlineRequest/*", 'ns' => ns)
-      requests = doc.xpath("//ns:litleRequest/*", 'ns' => ns) if requests.empty?
+      requests = if type == :online
+          doc.xpath("//ns:litleOnlineRequest/*", 'ns' => ns)
+        else
+          doc.xpath("//ns:litleRequest/*", 'ns' => ns)
+        end
       case requests.last.name
       when "authorization"
         fullccnum = doc.xpath('//ns:card/ns:number', 'ns' => ns).inner_text
@@ -157,5 +160,9 @@ end
 
 # Litle
 post '/vap/communicator/online' do
-  process_litle
+  process_litle(:online)
+end
+
+post '/' do
+  process_litle(:batch)
 end
