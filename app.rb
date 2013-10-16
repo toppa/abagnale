@@ -80,7 +80,7 @@ helpers do
         order = doc.xpath('//ns:orderId', 'ns' => ns).inner_text
         amount = doc.xpath('//ns:amount', 'ns' => ns).inner_text
 
-        result = Cc.result(fullccnum)
+        result = Cc.result(fullccnum, amount)
         tx = Transaction.create!(:fullccnum => fullccnum, :name => name, :auth_result => result, :order => order, :amount => amount)
         body = File.read(File.dirname(__FILE__) + "/fixtures/litle/auth_#{result}.xml")
         body.gsub!(/BADFOODDEADBEE-LITLE/, "abagnale-#{tx.id}")
@@ -139,7 +139,7 @@ post '/authorize' do
       order = doc.xpath('//OrderID').inner_text
       amount = doc.xpath('//Amount').inner_text
 
-      result = Cc.result(fullccnum)
+      result = Cc.result(fullccnum, amount)
       tx = Transaction.create!(:fullccnum => fullccnum, :name => name, :auth_result => result, :order => order, :amount => amount)
       body = File.read(File.dirname(__FILE__) + "/fixtures/orbital/auth_#{result}.xml")
       body.gsub!(/BADFOODDEADBEEFDECAFBAD123456789-ORBITAL/, "abagnale-#{tx.id}")
