@@ -46,18 +46,71 @@ helpers do
     string = string.chop.chop.chop if args[:hide_cents]
     (args[:commify] == false) ? string : commify(string)
   end
-  def litle_batch_response(orderids, xml_template)
+  def litle_batch_response(transactions, xml_template)
     doc =  Nokogiri::XML(xml_template)
     first_response = doc.at_css('captureResponse')
-    orderids.each_with_index do |orderid, i|
+    transactions.each_with_index do |transaction, i|
       new_response = first_response.dup(1)
       new_response.at_css('litleTxnId').content = "RANDOM-#{rand(100)}"
-      new_response.at_css('orderId').content = orderid
+      new_response.at_css('orderId').content = transaction.order
       first_response.before(new_response)
     end
-    (doc.xpath('//xmlns:captureResponse').size - orderids.size).times {
+    (doc.xpath('//xmlns:captureResponse').size - transactions.size).times {
       doc.xpath('//xmlns:captureResponse').last.remove }
     doc.to_xml
+  end
+  def process_litle(type)
+    xml = request.body.read
+    logger.info("Litle headers: '#{Hash[request.env.select{|k,v| k =~ /HTTP_/}].inspect}'")
+    logger.info("Content-Length: #{request.content_length} User-Agent: '#{request.user_agent}'")
+    logger.info("Litle request: '#{xml}'")
+    begin
+      doc =  Nokogiri::XML(xml)
+      ns = doc.children.first.namespace.href # dumbass xml namespaces
+
+      requests = if type == :online
+          doc.xpath("//ns:litleOnlineRequest/*", 'ns' => ns)
+        else
+          doc.xpath("//ns:litleRequest/*", 'ns' => ns)
+        end
+      case requests.last.name
+      when "authorization"
+        fullccnum = doc.xpath('//ns:card/ns:number', 'ns' => ns).inner_text
+        name = doc.xpath('//ns:name', 'ns' => ns).inner_text
+        order = doc.xpath('//ns:orderId', 'ns' => ns).inner_text
+        amount = doc.xpath('//ns:amount', 'ns' => ns).inner_text
+
+        result = Cc.result(fullccnum, amount)
+        tx = Transaction.create!(:fullccnum => fullccnum, :name => name, :auth_result => result, :order => order, :amount => amount)
+        body = File.read(File.dirname(__FILE__) + "/fixtures/litle/auth_#{result}.xml")
+        body.gsub!(/BADFOODDEADBEE-LITLE/, "abagnale-#{tx.id}")
+      when "capture"
+        txrefnum = doc.xpath('//ns:litleTxnId', 'ns' => ns).inner_text
+        tx_id = txrefnum.split('-').last
+        Transaction.find(tx_id).update_attributes(:settled_at => Time.now)
+        body = File.read(File.dirname(__FILE__) + "/fixtures/litle/capture_success.xml")
+      when "batchRequest"
+        transactions = []
+        doc.css('capture').each do |capture|
+          txrefnum = capture.at_xpath('ns:litleTxnId', 'ns' => ns).text
+          amount = capture.at_xpath('ns:amount', 'ns' => ns).text.to_i
+          tx_id = txrefnum.split('-').last
+          transaction = Transaction.find(tx_id)
+          transaction.update_attributes(:settled_at => Time.now, :amount => amount)
+          transactions << transaction
+        end
+        body = litle_batch_response(transactions,
+                                    File.read(File.dirname(__FILE__) + "/fixtures/litle/capture_batch_success.xml"))
+      else
+        logger.warn("Unrecognized litle request #{request_name}")
+        halt 400, "What are you talking about?"
+      end
+      headers "Content-Type" => 'application/xml'
+      body
+    rescue => err
+      logger.warn("Bogus litle request: #{err}")
+      halt 400, "What's the matter with you?"
+    end
   end
 end
 
@@ -86,7 +139,7 @@ post '/authorize' do
       order = doc.xpath('//OrderID').inner_text
       amount = doc.xpath('//Amount').inner_text
 
-      result = Cc.result(fullccnum)
+      result = Cc.result(fullccnum, amount)
       tx = Transaction.create!(:fullccnum => fullccnum, :name => name, :auth_result => result, :order => order, :amount => amount)
       body = File.read(File.dirname(__FILE__) + "/fixtures/orbital/auth_#{result}.xml")
       body.gsub!(/BADFOODDEADBEEFDECAFBAD123456789-ORBITAL/, "abagnale-#{tx.id}")
@@ -108,51 +161,9 @@ end
 
 # Litle
 post '/vap/communicator/online' do
-  xml = request.body.read
-  logger.info("Litle headers: '#{Hash[request.env.select{|k,v| k =~ /HTTP_/}].inspect}'")
-  logger.info("Content-Length: #{request.content_length} User-Agent: '#{request.user_agent}'")
-  logger.info("Litle request: '#{xml}'")
-  begin
-    doc =  Nokogiri::XML(xml)
-    ns = doc.children.first.namespace.href # dumbass xml namespaces
+  process_litle(:online)
+end
 
-    requests = doc.xpath("//ns:litleOnlineRequest/*", 'ns' => ns)
-    requests = doc.xpath("//ns:litleRequest/*", 'ns' => ns) if requests.empty?
-    case requests.last.name
-    when "authorization"
-      fullccnum = doc.xpath('//ns:card/ns:number', 'ns' => ns).inner_text
-      name = doc.xpath('//ns:name', 'ns' => ns).inner_text
-      order = doc.xpath('//ns:orderId', 'ns' => ns).inner_text
-      amount = doc.xpath('//ns:amount', 'ns' => ns).inner_text
-
-      result = Cc.result(fullccnum)
-      tx = Transaction.create!(:fullccnum => fullccnum, :name => name, :auth_result => result, :order => order, :amount => amount)
-      body = File.read(File.dirname(__FILE__) + "/fixtures/litle/auth_#{result}.xml")
-      body.gsub!(/BADFOODDEADBEE-LITLE/, "abagnale-#{tx.id}")
-    when "capture"
-      txrefnum = doc.xpath('//ns:litleTxnId', 'ns' => ns).inner_text
-      tx_id = txrefnum.split('-').last
-      Transaction.find(tx_id).update_attributes(:settled_at => Time.now)
-      body = File.read(File.dirname(__FILE__) + "/fixtures/litle/capture_success.xml")
-    when "batchRequest"
-      transactions = []
-      doc.css('capture').each do |capture|
-        txrefnum = capture.at_xpath('ns:litleTxnId', 'ns' => ns).text
-        tx_id = txrefnum.split('-').last
-        transaction = Transaction.find(tx_id)
-        transaction.update_attributes(:settled_at => Time.now)
-        transactions << transaction
-      end
-      body = litle_batch_response(transactions.map(&:order),
-                                  File.read(File.dirname(__FILE__) + "/fixtures/litle/capture_batch_success.xml"))
-    else
-      logger.warn("Unrecognized litle request #{request_name}")
-      halt 400, "What are you talking about?"
-    end
-    headers "Content-Type" => 'application/xml'
-    body
-  rescue => err
-    logger.warn("Bogus litle request: #{err}")
-    halt 400, "What's the matter with you?"
-  end
+post '/' do
+  process_litle(:batch)
 end

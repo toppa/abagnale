@@ -10,7 +10,7 @@ class Cc
     '5116381817387388' => { :result => 'declined' },
     '4116196783374209' => { :result => 'declined' },
   }
-  def self.result(fullccnum)
-    CARDS[fullccnum][:result] rescue 'declined'
+  def self.result(fullccnum, amount)
+    amount.to_s[-2..-1] == '13' ? 'declined' : 'approved'
   end
 end
