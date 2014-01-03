@@ -1,5 +1,7 @@
 *~
 *.gem
+*.yml
+/extras
 /log
 /.bundle
 /.rvmrc

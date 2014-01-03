@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<litleRequest version="8.2" xmlns="http://www.litle.com/schema" numBatchRequests="2">
+<litleRequest version="8.2" xmlns="http://www.litle.com/schema" id="1487404" numBatchRequests="2">
   <authentication>
-    <user>ABC123ABC123ABC123</user>
-    <password>ABC123ABC123ABC123</password>
+    <user>ACTBLUE</user>
+    <password>api_password</password>
   </authentication>
   <batchRequest numAuths="0" authAmount="0" numCaptures="2" captureAmount="400" merchantId="13769576041">
-    <capture reportGroup="1" partial="false">
+    <capture id="123" reportGroup="1" partial="false">
       <litleTxnId>1</litleTxnId>
       <amount>100</amount>
     </capture>
-    <capture reportGroup="1" partial="false">
+    <capture id="456" reportGroup="1" partial="false">
       <litleTxnId>2</litleTxnId>
       <amount>300</amount>
     </capture>
   </batchRequest>
   <batchRequest numAuths="0" authAmount="0" numCaptures="1" captureAmount="200" merchantId="13769576042">
-    <capture reportGroup="1" partial="false">
+    <capture id="789" reportGroup="1" partial="false">
       <litleTxnId>3</litleTxnId>
       <amount>200</amount>
     </capture>
