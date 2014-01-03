@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<litleOnlineRequest version="8.2" xmlns="http://www.litle.com/schema" merchantId="073202">
+  <authentication>
+    <user>ACTBLUE</user>
+    <password>api_password</password>
+  </authentication>
+  <credit reportGroup="1">
+    <litleTxnId>ABAGNALE-1</litleTxnId>
+    <amount>11000</amount>
+  </credit>
+</litleOnlineRequest>
