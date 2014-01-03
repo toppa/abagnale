@@ -51,6 +51,7 @@ helpers do
     first_response = doc.at_css('captureResponse')
     transactions.each_with_index do |transaction, i|
       new_response = first_response.dup(1)
+      new_response['id'] = transaction.original_id.to_s
       new_response.at_css('litleTxnId').content = "RANDOM-#{rand(100)}"
       new_response.at_css('orderId').content = transaction.order
       first_response.before(new_response)
@@ -96,7 +97,7 @@ helpers do
           amount = capture.at_xpath('ns:amount', 'ns' => ns).text.to_i
           tx_id = txrefnum.split('-').last
           transaction = Transaction.find(tx_id)
-          transaction.update_attributes(settled_at: Time.now, amount: amount)
+          transaction.update_attributes(settled_at: Time.now, amount: amount, original_id: capture['id'])
           transactions << transaction
         end
         body = litle_batch_response(transactions,

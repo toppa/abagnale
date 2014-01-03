@@ -2,14 +2,14 @@
 
 <litleResponse version="8.2" xmlns="http://www.litle.com/schema" response="0" message="Valid Format" litleSessionId="819799335655424016">
   <batchResponse litleBatchId="819799335655424024" merchantId="107601">
-    <captureResponse reportGroup="1">
+    <captureResponse id="123" reportGroup="1">
       <litleTxnId>BADFOODDEADBEE-LITLE</litleTxnId>
       <orderId>01487292</orderId>
       <response>000</response>
       <responseTime>2013-08-07T21:57:05</responseTime>
       <message>Approved</message>
     </captureResponse>
-    <captureResponse reportGroup="1">
+    <captureResponse id="456" reportGroup="1">
       <litleTxnId>BADFOODDEADBEE-LITLE</litleTxnId>
       <orderId>01487291</orderId>
       <response>000</response>
