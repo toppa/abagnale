@@ -11,6 +11,6 @@ class Cc
     '4116196783374209' => { :result => 'declined' },
   }
   def self.result(fullccnum, amount)
-    amount.to_s[-2..-1] == '13' ? 'declined' : 'approved'
+    CARDS[fullccnum][:result] rescue 'declined'
   end
 end
