@@ -96,7 +96,7 @@ helpers do
           amount = capture.at_xpath('ns:amount', 'ns' => ns).text.to_i
           tx_id = txrefnum.split('-').last
           transaction = Transaction.find(tx_id)
-          transaction.update_attributes(:settled_at => Time.now, :amount => amount)
+          transaction.update_attributes(settled_at: Time.now, amount: amount)
           transactions << transaction
         end
         body = litle_batch_response(transactions,
