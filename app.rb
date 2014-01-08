@@ -74,7 +74,7 @@ helpers do
         else
           doc.xpath("//ns:litleRequest/*", 'ns' => ns)
         end
-      case requests.last.name
+      case request_name = requests.last.name
       when "authorization"
         fullccnum = doc.xpath('//ns:card/ns:number', 'ns' => ns).inner_text
         name = doc.xpath('//ns:name', 'ns' => ns).inner_text
