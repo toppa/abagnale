@@ -52,7 +52,7 @@ helpers do
     transactions.each_with_index do |transaction, i|
       new_response = first_response.dup(1)
       new_response['id'] = transaction.original_id.to_s
-      new_response.at_css('litleTxnId').content = "RANDOM-#{rand(100)}"
+      new_response.at_css('litleTxnId').content = "abagnale-#{transaction.id}"
       new_response.at_css('orderId').content = transaction.order
       first_response.before(new_response)
     end
@@ -74,7 +74,7 @@ helpers do
         else
           doc.xpath("//ns:litleRequest/*", 'ns' => ns)
         end
-      case requests.last.name
+      case request_name = requests.last.name
       when "authorization"
         fullccnum = doc.xpath('//ns:card/ns:number', 'ns' => ns).inner_text
         name = doc.xpath('//ns:name', 'ns' => ns).inner_text
@@ -90,6 +90,13 @@ helpers do
         tx_id = txrefnum.split('-').last
         Transaction.find(tx_id).update_attributes(:settled_at => Time.now)
         body = File.read(File.dirname(__FILE__) + "/fixtures/litle/capture_success.xml")
+      when "credit"
+        txrefnum = doc.xpath('//ns:litleTxnId', 'ns' => ns).inner_text
+        tx_id = txrefnum.split('-').last
+        if transaction = Transaction.find_by_id(tx_id)
+          transaction.update_attributes(:refunded_at => Time.now)
+        end
+        body = File.read(File.dirname(__FILE__) + "/fixtures/litle/credit_success.xml")
       when "batchRequest"
         transactions = []
         doc.css('capture').each do |capture|

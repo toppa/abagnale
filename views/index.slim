@@ -12,6 +12,7 @@ table.transactions
     th Order
     th Result
     th Settled
+    th Refunded
 
   - @transactions.each do |tx|
     tr
@@ -21,5 +22,6 @@ table.transactions
       td.order= tx.order
       td.auth_result= tx.auth_result
       td.settled_at== tx.settled_at.nil? ? '&nbsp;' : tx.settled_at.to_s(:db)
+      td.refunded_at== tx.refunded_at.nil? ? '&nbsp;' : tx.refunded_at.to_s(:db)
       
 == will_paginate @transactions

@@ -1,0 +1,9 @@
+<litleOnlineResponse version="8.2" response="0" message="Valid Format">
+    <creditResponse reportGroup="1">
+        <litleTxnId>BADFOODDEADBEE-LITLE</litleTxnId>
+        <response>000</response>
+        <responseTime>2011-03-08T16:41:49</responseTime>
+        <postDate>2011-03-08</postDate>
+        <message>Approved</message>
+    </creditResponse>
+</litleOnlineResponse>
