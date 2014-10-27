@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 ruby '1.9.3'
 
-gem 'activerecord', '3.2.16'
+gem 'activerecord'
 gem 'pg'
 gem 'pry'
 gem 'nokogiri'
