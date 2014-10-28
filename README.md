@@ -7,8 +7,8 @@ The simplest possible impostor for a credit card processor.
     git clone https://github.com/actblue/abagnale.git
     bundle install
     createdb abagnale
-    rake db:migrate
-    ruby app.rb
+    bundle exec rake db:migrate
+    bundle exec ./app.rb
 
 ## Usage
 
