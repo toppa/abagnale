@@ -1,9 +1,5 @@
-- content_for :title do
-  | Abagnale Transactions
+h1 Abagnale Transactions
 
-h1
-  | Abagnale Transactions
-  
 table.transactions
   thead
     th Date
@@ -23,5 +19,5 @@ table.transactions
       td.auth_result= tx.auth_result
       td.settled_at== tx.settled_at.nil? ? '&nbsp;' : tx.settled_at.to_s(:db)
       td.refunded_at== tx.refunded_at.nil? ? '&nbsp;' : tx.refunded_at.to_s(:db)
-      
+
 == will_paginate @transactions
