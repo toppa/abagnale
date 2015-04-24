@@ -18,7 +18,3 @@ The simplest possible impostor for a credit card processor.
     curl -v -X POST -d @examples/request_litle_credit.xml http://localhost:4567/vap/communicator/online
 
 [http://localhost:4567/](http://localhost:4567/) will give you a list of all processed transactions.
-
-There is a test server in Heroku:
-
-    curl -v -X POST -d @examples/request_orbital_auth.xml http://abagnale.herokuapp.com/authorize
