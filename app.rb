@@ -143,7 +143,7 @@ get '/hi' do
 end
 
 get '/' do
-  @transactions = Transaction.paginate(page: params[:page], order: 'created_at DESC')
+  @transactions = Transaction.page(params[:page]).order('created_at DESC')
   slim :index
 end
 
