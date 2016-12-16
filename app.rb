@@ -18,14 +18,14 @@ logger = Logger.new(STDOUT)
 db = URI.parse(ENV['DATABASE_URL'] || 'postgres://localhost/abagnale')
 
 ActiveRecord::Base.establish_connection(
-  :adapter  => db.scheme == 'postgres' ? 'postgresql' : db.scheme,
-  :host     => db.host,
-  :port     => db.port,
-  :username => db.user,
-  :password => db.password,
-  :database => db.path[1..-1],
-  :encoding => 'utf8'
-  # :min_messages => 'warning'
+  adapter: db.scheme == 'postgres' ? 'postgresql' : db.scheme,
+  host: db.host,
+  port: db.port,
+  username: db.user,
+  password: db.password,
+  database: db.path[1..-1],
+  encoding: 'utf8'
+  # min_messages: 'warning'
 )
 
 # ActiveRecord::Base.logger = Logger.new(STDOUT)
@@ -87,19 +87,19 @@ helpers do
         amount = doc.xpath('//ns:amount', 'ns' => ns).inner_text
 
         result = Cc.result(fullccnum, amount)
-        tx = Transaction.create!(:fullccnum => fullccnum, :name => name, :auth_result => result, :order => order, :amount => amount)
+        tx = Transaction.create!(fullccnum: fullccnum, name: name, auth_result: result, order: order, amount: amount)
         body = File.read(File.dirname(__FILE__) + "/fixtures/litle/auth_#{result}.xml")
         body.gsub!(/BADFOODDEADBEE-LITLE/, "abagnale-#{tx.id}")
       when "capture"
         txrefnum = doc.xpath('//ns:litleTxnId', 'ns' => ns).inner_text
         tx_id = txrefnum.split('-').last
-        Transaction.find(tx_id).update_attributes(:settled_at => Time.now)
+        Transaction.find(tx_id).update_attributes(settled_at: Time.now)
         body = File.read(File.dirname(__FILE__) + "/fixtures/litle/capture_success.xml")
       when "credit"
         txrefnum = doc.xpath('//ns:litleTxnId', 'ns' => ns).inner_text
         tx_id = txrefnum.split('-').last
         if transaction = Transaction.find_by_id(tx_id)
-          transaction.update_attributes(:refunded_at => Time.now)
+          transaction.update_attributes(refunded_at: Time.now)
         end
         body = File.read(File.dirname(__FILE__) + "/fixtures/litle/credit_success.xml")
       when "batchRequest"
@@ -114,9 +114,20 @@ helpers do
         end
         body = litle_batch_response(transactions,
                                     File.read(File.dirname(__FILE__) + "/fixtures/litle/capture_batch_success.xml"))
+      when "echeckSale"
+        accnum = doc.xpath('//ns:echeck/ns:accNum', 'ns' => ns).inner_text
+        name = doc.xpath('//ns:billToAddress/ns:name', 'ns' => ns).inner_text
+        order = doc.xpath('//ns:orderId', 'ns' => ns).inner_text
+        amount = doc.xpath('//ns:amount', 'ns' => ns).inner_text
+        result = 'approved'
+
+        tx = Transaction.create!(fullccnum: accnum, name: name, auth_result: result, order: order, amount: amount)
+        body = File.read(File.dirname(__FILE__) + "/fixtures/litle/ach_approved.xml")
+        body.gsub!(/BADFOODDEADBEE-LITLE/, "abagnale-#{tx.id}")
+
       else
         logger.warn("Unrecognized litle request #{request_name}")
-        halt 400, "What are you talking about?"
+        halt 400, "Unrecognized litle request #{request_name}"
       end
       headers "Content-Type" => 'application/xml'
       body
@@ -132,7 +143,7 @@ get '/hi' do
 end
 
 get '/' do
-  @transactions = Transaction.paginate(:page => params[:page], :order => 'created_at DESC')
+  @transactions = Transaction.paginate(page: params[:page], order: 'created_at DESC')
   slim :index
 end
 
@@ -153,13 +164,13 @@ post '/authorize' do
       amount = doc.xpath('//Amount').inner_text
 
       result = Cc.result(fullccnum, amount)
-      tx = Transaction.create!(:fullccnum => fullccnum, :name => name, :auth_result => result, :order => order, :amount => amount)
+      tx = Transaction.create!(fullccnum: fullccnum, name: name, auth_result: result, order: order, amount: amount)
       body = File.read(File.dirname(__FILE__) + "/fixtures/orbital/auth_#{result}.xml")
       body.gsub!(/BADFOODDEADBEEFDECAFBAD123456789-ORBITAL/, "abagnale-#{tx.id}")
     when "MarkForCapture"
       txrefnum = doc.xpath('//TxRefNum').inner_text
       tx_id = txrefnum.split('-').last
-      Transaction.find(tx_id).update_attributes(:settled_at => Time.now)
+      Transaction.find(tx_id).update_attributes(settled_at: Time.now)
       body = File.read(File.dirname(__FILE__) + "/fixtures/orbital/capture_success.xml")
     else
       logger.warn("Unrecognized orbital request #{request_name}")
