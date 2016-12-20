@@ -136,6 +136,11 @@ helpers do
       halt 400, "What's the matter with you?"
     end
   end
+
+  def git_revision
+    return nil if `which git`.blank?
+    `git log --pretty=format:'%h' -n 1`
+  end
 end
 
 get '/hi' do
